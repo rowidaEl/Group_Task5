@@ -151,10 +151,20 @@ Image convertToGrayscale(const Image& input) {
     Image output(width, height, 1); // Single channel for grayscale
 
     // TODO: Implement this function
-    // For each pixel:
-    //   Get R, G, B values from input image
-    //   Calculate gray = 0.299*R + 0.587*G + 0.114*B
-    //   Set output(y, x, 0) = gray
+   for(int y = 0 ; y < height; y++)
+   {
+
+       for(int x = 0 ; x< width ;x++)
+       {
+
+           int R = input(y,x,0);
+           int G = input(y,x,1);
+           int B = input (y,x,2);
+            int grey = (int)(0.299*R + 0.587*G + 0.114*B);
+            output(y,x,0) = grey;
+       }
+   }
+
 
     return output;
 }
@@ -222,9 +232,21 @@ Image adjustBrightness(const Image& input, int value) {
     Image output(width, height, channels);
 
     // TODO: Implement this function
-    // For each pixel and each channel:
-    //   new_value = input(y, x, c) + value
-    //   output(y, x, c) = max(0, min(255, new_value))
+
+    for (int y =0 ; y < height ; y++)
+    {
+        for(int x = 0 ; x < width ; x++)
+        {
+
+            for(int c = 0 ; c < channels ; c++)
+            {
+
+                int new_value = input(y,x,c) + value;
+                output(y,x,c) = max(0,min(255,new_value));
+            }
+        }
+    }
+
 
     return output;
 }
@@ -299,8 +321,19 @@ Image rotate90(const Image& input) {
     Image output(height, width, channels); // Width and height are swapped
 
     // TODO: Implement this function
-    // For each pixel and each channel:
-    //   output(x, height-1-y, c) = input(y, x, c)
+    for(int y = 0 ; y < height;y++)
+    {
+        for(int x = 0 ; x < width ; x++)
+        {
+            for(int c = 0 ; c < channels ; c++)
+            {
+
+                output(x,height-1-y,c) = input(y,x,c);
+            }
+        }
+    }
+
+
 
     return output;
 }
