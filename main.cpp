@@ -191,7 +191,7 @@ Image flipHorizontal(const Image& input) {
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             for (int c = 0; c < channels; c++) {
-                output(y, width - 1 - x, c) = input(y, x, c);
+                output(y, width-1-x, c) = input(y, x, c);
             }
         }
     }
@@ -222,7 +222,7 @@ Image flipVertical(const Image& input) {
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             for (int c = 0; c < channels; c++) {
-                output(height - 1 - y, x, c) = input(y, x, c);
+                output(height-1-y, x, c) = input(y, x, c);
             }
         }
     }
