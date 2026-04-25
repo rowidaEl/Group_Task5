@@ -247,10 +247,16 @@ Image adjustContrast(const Image& input, float factor) {
     int channels = input.getChannels();
     Image output(width, height, channels);
 
-    // TODO: Implement this function
-    // For each pixel and each channel:
-    //   new_value = factor * (input(y, x, c) - 128) + 128
-    //   output(y, x, c) = max(0, min(255, new_value))
+    for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                for (int c = 0; c < channels; c++) {
+                    // Apply contrast formula: factor * (pixel - 128) + 128
+                    float newValue = factor * (input(y, x, c) - 128) + 128;
+                    // Clamp the result between 0 and 255
+                    output(y, x, c) = max(0, min(255, (int)newValue));
+                }
+            }
+        }
 
     return output;
 }
@@ -272,12 +278,22 @@ Image applyBlur(const Image& input) {
     int channels = input.getChannels();
     Image output(width, height, channels);
 
-    // TODO: Implement this function
-    // For each pixel (from y=1 to height-2, x=1 to width-2) and each channel:
-    //   sum = 0
-    //   For each neighbor (ky from -1 to 1, kx from -1 to 1):
-    //     sum += input(y+ky, x+kx, c)
-    //   output(y, x, c) = sum / 9
+    // Process interior pixels only (y from 1 to height-2, x from 1 to width-2)
+    for (int y = 1; y < height - 1; y++) {
+        for (int x = 1; x < width - 1; x++) {
+            for (int c = 0; c < channels; c++) {
+                int sum = 0;
+                // Sum the 3x3 neighborhood
+                for (int ky = -1; ky <= 1; ky++) {
+                    for (int kx = -1; kx <= 1; kx++) {
+                        sum += input(y + ky, x + kx, c);
+                    }
+                }
+                // Integer division (sum / 9) as specified
+                output(y, x, c) = sum / 9;
+            }
+        }
+    }
 
     return output;
 }
